@@ -38,9 +38,9 @@ pipeline {
          steps {
            echo "deploying"
            sh """
-           #!/bin/bash
-           cd dist
-           sudo cp -rv . /var/www/html
+           ##!/bin/bash
+           #cd dist
+           #sudo cp -rv . /var/www/html
            """
            }
         }
