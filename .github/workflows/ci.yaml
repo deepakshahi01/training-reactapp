@@ -38,7 +38,8 @@ jobs:
       - name: list contents of dist folder
         run: ls -al
       - name: login to aws server
-        run: ssh -i $SSH_KEY $SSH_USER@$SERVER_IP ls
+        run: ssh -i ${{ secrets.SSH_KEY }} ${{ env.SSH_USER }}@${{ env.SERVER_IP }}  ls
+
 
 
 
