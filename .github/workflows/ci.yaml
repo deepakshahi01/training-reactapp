@@ -19,7 +19,10 @@ jobs:
         run: npm install
       - name: testing
         run: npm test
+      - name: build artifact
+        run: npm run build
     
+
 
 
 
