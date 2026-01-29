@@ -35,6 +35,7 @@ jobs:
         uses: actions/download-artifact@v7.0.0
         with:
           name: dist
+          path: dist/
       - name: list contents of dist folder
         run: ls -al
       - name: dump secrets to a file
@@ -42,7 +43,9 @@ jobs:
       - name: list contents of devops-tos and set permissions
         run: cat devops-tos.pem && chmod 400 devops-tos.pem
       - name: login to aws server
-        run: ssh -o StrictHostKeyChecking=no -i devops-tos.pem ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}  ls
+        run: ssh -o StrictHostKeyChecking=no -i devops-tos.pem ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}  sudo [ ! -d "/var/www/html/deepak" ] && mkdir "/var/www/html/deepak"
+      - name: copy dist folder to aws server
+        run: scp -i devops-tos.pem -rv dist/ ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}:/var/www/html/deepak
 
 
 
