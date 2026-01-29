@@ -36,11 +36,7 @@ jobs:
         with:
           name: dist
       - name: list contents of dist folder
-        run: ls -al dist
-
-          
-
-
+        run: ls -al
 
 
 
