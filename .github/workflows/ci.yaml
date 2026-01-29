@@ -45,7 +45,8 @@ jobs:
       - name: login to aws server
         run: ssh -o StrictHostKeyChecking=no -i devops-tos.pem ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }} ls 
       - name: copy dist folder to aws server
-        run: scp -i devops-tos.pem -rv dist/ ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}:/home/ubuntu
+        run: scp -i devops-tos.pem -rv dist/* ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}:/home/ubuntu
+
 
 
 
