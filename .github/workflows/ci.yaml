@@ -37,8 +37,11 @@ jobs:
           name: dist
       - name: list contents of dist folder
         run: ls -al
+      - name: dump secrets to a file
+        run: cat ${{ secrets.SSH_KEY }} > devops-tos.pem
       - name: login to aws server
-        run: ssh -i ${{ secrets.SSH_KEY }} ${{ env.SSH_USER }}@${{ env.SERVER_IP }}  ls
+        run: ssh -i devops-tos.pem ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}  ls
+
 
 
 
