@@ -1,0 +1,13 @@
+name: ci nodejs app
+on:
+  push:
+    branches:
+     - main
+
+jobs:
+  build-nodejs-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello nodejs app"
+      
+    
