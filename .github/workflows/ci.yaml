@@ -21,7 +21,15 @@ jobs:
         run: npm test
       - name: build artifact
         run: npm run build
+      - name: upload artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
     
+
 
 
 
