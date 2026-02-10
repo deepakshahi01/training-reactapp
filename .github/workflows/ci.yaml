@@ -1,0 +1,56 @@
+name: ci nodejs app
+on:
+  push:
+    branches:
+     - main
+
+jobs:
+  build-nodejs-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello nodejs app"
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6.2.0
+        with:
+          node-version: 20.x
+      - name: install dependencies
+        run: npm install
+      - name: testing
+        run: npm test
+      - name: build artifact
+        run: npm run build
+      - name: upload artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+  deploy-on-aws:
+    needs: build-nodejs-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: download dist folder
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: dist
+          path: dist/
+      - name: list contents of dist folder
+        run: ls -al
+      - name: dump secrets to a file
+        run: echo "${{ secrets.SSH_KEY }}" > devops-tos.pem
+      - name: list contents of devops-tos and set permissions
+        run: cat devops-tos.pem && chmod 400 devops-tos.pem
+      - name: login to aws server
+        run: ssh -o StrictHostKeyChecking=no -i devops-tos.pem ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }} ls
+      - name: copy dist folder to aws server
+        run: scp -i devops-tos.pem -rv dist/* ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }}:/home/ubuntu/deepak
+      - name: copy contents to web server
+        run: ssh -o StrictHostKeyChecking=no -i devops-tos.pem ${{ vars.SSH_USER }}@${{ vars.SERVER_IP }} sudo mv /home/ubuntu/deepak/ /var/www/html/deepak
+
+
+
+
+
+
